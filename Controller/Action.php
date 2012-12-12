@@ -779,20 +779,6 @@ abstract class Zend_Controller_Action implements Zend_Controller_Action_Interfac
      */
     protected function _redirect($url, array $options = array())
     {
-        $this->redirect($url, $options);
-    }
-
-    /**
-     * Redirect to another URL
-     *
-     * Proxies to {@link Zend_Controller_Action_Helper_Redirector::gotoUrl()}.
-     *
-     * @param string $url
-     * @param array $options Options to be used when redirecting
-     * @return void
-     */
-    public function redirect($url, array $options = array())
-    {
-        $this->_helper->redirector->gotoUrl($url, $options);
+	$this->_helper->redirector->gotoUrl($url, $options);
     }
 }
