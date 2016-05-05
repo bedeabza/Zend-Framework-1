@@ -86,6 +86,11 @@ class Zend_Controller_Router_Route_Hostname extends Zend_Controller_Router_Route
     protected $_request;
 
     /**
+     * @var int
+     */
+    protected $_port = null;
+
+    /**
      * Helper var that holds a count of route pattern's static parts
      * for validation
      * @var int
@@ -147,6 +152,12 @@ class Zend_Controller_Router_Route_Hostname extends Zend_Controller_Router_Route
         $this->_defaults     = (array) $defaults;
         $this->_requirements = (array) $reqs;
         $this->_scheme       = $scheme;
+        
+        if (strpos($route, ':') !== false) {
+            $arr = explode(':', $route);
+            $route = $arr[0];
+            $this->_port = array_pop($arr);
+        }
 
         if ($route != '') {
             foreach (explode('.', $route) as $pos => $part) {
@@ -283,7 +294,7 @@ class Zend_Controller_Router_Route_Hostname extends Zend_Controller_Router_Route
 
         foreach (array_reverse($host, true) as $key => $value) {
             if ($flag || !isset($this->_variables[$key]) || $value !== $this->getDefault($this->_variables[$key]) || $partial) {
-                if ($encode) $value = urlencode($value);
+                if ($encode && !preg_match('/^:\d+$/i', $value)) $value = urlencode($value);
                 $return = '.' . $value . $return;
                 $flag = true;
             }
@@ -302,7 +313,7 @@ class Zend_Controller_Router_Route_Hostname extends Zend_Controller_Router_Route
             }
         }
 
-        $url      = $scheme . '://' . $url;
+        $url      = $scheme . '://' . $url . ($this->_port ? ':' . $this->_port : '');
 
         return $url;
     }
