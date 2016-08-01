@@ -890,6 +890,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
         'schmidt',
         'scholarships',
         'school',
+        'schools',
         'schule',
         'schwarz',
         'science',
